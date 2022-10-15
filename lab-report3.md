@@ -2,8 +2,68 @@
 Simplest Search Engine
 ```
 #code block
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
+class SearchEngine {
+    public static void main(String[] args) throws IOException {
+        if(args.length == 0){
+            System.out.println("Missing port number! Try any number between 1024 to 49151");
+            return;
+        }
+
+        int port = Integer.parseInt(args[0]);
+
+        Server.start(port, new QueryHandler());
+    }
+}
+
+class QueryHandler implements URLHandler {
+
+    List<String> s = new ArrayList<String>();
+
+    public String handleRequest(URI url) {
+        if (url.getPath().equals("/")) {
+            return String.format("Number: %d", s.size());
+        } else {
+            System.out.println("Path: " + url.getPath());
+            if (url.getPath().contains("/add")) {
+                String[] parameters = url.getQuery().split("=");
+                if ("s".equals(parameters[0])) {
+                    s.add(parameters[1]);
+                    return String.format("List add %s!", parameters[1]);
+                }
+            }else if (url.getPath().contains("/search")){
+                String[] parameters = url.getQuery().split("=");
+                String returnS = "";
+                if ("s".equals(parameters[0])){
+                    for (String s1 : s) {
+                        if(s1.contains(parameters[1])){
+                            returnS += (" AND "+s1);
+                        }
+                    }
+                }
+                if (returnS.startsWith(" AND ")){
+                    returnS = returnS.substring(5);
+                }
+                return String.format("List is %s!", returnS);
+            }
+            return "404 Not Found!";
+        }
+    }
+}
 ```
+
+
+![Image](3-7.png)
+This use handleRequest method. The argument is "/add", and the value is "?s=apple". If the value changes, another string will add to the arraylist. If the argument change or "?s=" does not exist, it will return "404 not found!".
+![Image](3-8.png)
+This use handleRequest method. The argument is "/add", and the value is "?s=pineapple". The argument is "/add", and the value is "?s=apple". If the value changes, another string will add to the arraylist. If the argument change or "?s=" does not exist, it will return "404 not found!".
+![Image](3-9.png)
+This use handleRequest method. The argument is "/search", and the value is "?s=app". The argument is "/add", and the value is "?s=apple". If the value changes, it will search the given string in the arraylist. If the argument change or "?s=" does not exist, it will return "404 not found!".
+
 
 # Part 2
 
