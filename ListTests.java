@@ -6,8 +6,6 @@ import java.util.List;
 import static org.junit.Assert.assertArrayEquals;
 
 public class ListTests{
-
-
   @Test
   public void testfilter() {
     String[] expect = new String[]{"Linked", "Array"};
