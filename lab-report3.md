@@ -1,6 +1,12 @@
 # Part 1
+Simplest Search Engine
+```
+#code block
+
+```
 
 # Part 2
+
 In the ArrayExamples.java, there is a bug in the reversed method. 
 ![Image](3-1.png)
 This image is the failure-inducing input. 
