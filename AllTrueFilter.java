@@ -1,4 +1,3 @@
-package searchEngine20221015;
 
 public class AllTrueFilter implements StringChecker{
 
